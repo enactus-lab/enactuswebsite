@@ -1,195 +1,86 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TeamGrid from "@/app/components/TeamGrid";
-
-/* ================= CORE TEAM ================= */
-const coreTeam = [
-  {
-    name: "Vanshika Sharma",
-    role: "President",
-    description: "Meet Vanshika Sharma, our visionary President! Bold, ambitious, and confident, Vanshika leads with conviction and clarity.",
-    image: "/vanshika.jpg",
-    linkedin: "https://www.linkedin.com/in/vanshika-sharma-3461032a6?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
-  },
-  {
-    name: "Mehak Sharma",
-    role: "Vice President",
-    description: "Our Vice President Mehak Sharma brings energy and precision, ensuring every initiative runs smoothly and efficiently.",
-    image: "/mehak.jpeg",
-    linkedin: "https://www.linkedin.com/in/mehak-sharma-324074277/",
-  },
-  {
-    name: "Tanmay",
-    role: "Director",
-    description: "Tanmay, our Director, drives innovation and execution, bridging ideas with impactful results across all projects.",
-    image: "https://i.pravatar.cc/400?img=3",
-    linkedin: "https://www.linkedin.com/in/tanmaypandit1308/",
-  },
-  {
-    name: "Monisha Rai",
-    role: "Project Head – Palaash",
-    description: "Leading Project Palaash, Monisha Rai transforms creativity into sustainable solutions with dedication and vision.",
-    image:"/Monisha.jpeg",
-    linkedin: "https://www.linkedin.com/in/monisha-rai-57a8a5263?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
-  },
-  {
-    name: "Alisha Ahlawat",
-    role: "Project Head – Aarazi",
-    description: "Alisha Ahlawat heads Project Aarazi, working passionately toward sustainable agriculture and soil restoration.",
-    image: "/alisha.png",
-    linkedin: "https://www.linkedin.com/in/alisha-ahlawat-a81743338?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
-  },
-  {
-    name: "Bahulika Srivastava",
-    role: "Project Head – Ibtida",
-    description: "Bahulika Srivastava leads Project Ibtida, focusing on innovative, climate-conscious material solutions.",
-    image: "/bahulika.jpeg",
-    linkedin: "https://www.linkedin.com/in/bahulika-srivastava-200108325",
-  },
-  {
-    name: "Vidhi Garg",
-    role: "Design & Tech Head",
-    description: "Vidhi Garg, our Design & Tech Head, blends creativity with technology to build impactful digital experiences.",
-    image: "/vidhi.jpeg",
-    linkedin: "https://www.linkedin.com/in/vidhigargg?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
-  },
-  {
-    name: "Garv Gupta",
-    role: "Content Head",
-    description: "Garv Gupta leads content strategy, shaping powerful narratives that amplify our mission and impact.",
-    image: "/Garv.jpg",
-    linkedin: "https://www.linkedin.com/in/garv-gupta-7b15a3246?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
-  },
-  {
-    name: "Pragun Gulati",
-    role: "Marketing Head",
-    description: "Pragun Gulati heads marketing, driving outreach and engagement through strategic campaigns.",
-    image: "/Pragun.png",
-    linkedin: "https://www.linkedin.com/in/pragun-gulati-a50305361?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
-  },
-  {
-    name: "Komal Saini",
-    role: "R&D Head",
-    description: "Komal Saini leads R&D, constantly innovating and refining solutions for sustainable impact.",
-    image: "/Komal.jpg",
-    linkedin: "https://www.linkedin.com/in/komal-saini-788b6b311",
-  },
-  {
-    name: "Bhoomika Singhal",
-    role: "PR Head",
-    description: "Bhoomika Singhal, our PR Head, builds strong relationships and enhances our public presence.",
-    image: "/Bhoomika.jpg",
-    linkedin: "https://www.linkedin.com/in/bhoomika-singhal-8724a222b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
-  },
-  {
-    name: "Mayank Madan",
-    role: "Operations Head",
-    description: "Mayank Madan oversees operations, ensuring seamless execution of projects and initiatives.",
-    image: "/Mayank Madaan.jpg",
-    linkedin: "https://www.linkedin.com/in/mayank-madaan",
-  },
-  {
-    name: "Khushi Pandey",
-    role: "HR Head",
-    description: "Khushi Pandey, our HR Head, nurtures team culture and ensures a supportive environment for all members.",
-    image: "/khushi.png",
-    linkedin: "https://www.linkedin.com/in/khushi-pandey-9a0476372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
-  },
-];
-
-/* ================= SENIOR MEMBERS (DEMO) ================= */
-const seniorMembers = [
-  {
-    name: "Tanmay",
-    role: "Senior Member",
-    image: "https://i.pravatar.cc/400?img=15",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Tanmay",
-    role: "Senior Member",
-    image: "https://i.pravatar.cc/400?img=16",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Tanmay ",
-    role: "Senior Member",
-    image: "https://i.pravatar.cc/400?img=17",
-    linkedin: "https://linkedin.com",
-  },
-];
-
-/* ================= ASSOCIATES (DEMO) ================= */
-const associates = [
-  {
-    name: "Tanmay",
-    role: "Associate",
-    image: "https://i.pravatar.cc/400?img=18",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Tanmay",
-    role: "Associate",
-    image: "https://i.pravatar.cc/400?img=19",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Tanmay",
-    role: "Associate",
-    image: "https://i.pravatar.cc/400?img=20",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Tanmay",
-    role: "Associate",
-    image: "https://i.pravatar.cc/400?img=21",
-    linkedin: "https://linkedin.com",
-  },
-];
+import { supabase } from "@/lib/supabase";
 
 export default function CoreTeamPage() {
+  const [coreTeam, setCoreTeam] = useState<any[]>([]);
+  const [seniorMembers, setSeniorMembers] = useState<any[]>([]);
+  const [associates, setAssociates] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      const { data } = await supabase
+        .from("team")
+        .select("*")
+        .order("created_at", { ascending: true });
+
+      if (data) {
+        const map = (m: any) => ({
+          name: m.name,
+          role: m.role,
+          description: m.description || "",
+          image: m.image_url || "/yellow.png",
+          linkedin: m.linkedin || "https://linkedin.com",
+        });
+
+        setCoreTeam(data.filter((m) => m.section === "core").map(map));
+        setSeniorMembers(data.filter((m) => m.section === "senior").map(map));
+        setAssociates(data.filter((m) => m.section === "associate").map(map));
+      }
+      setLoading(false);
+    };
+
+    fetchTeam();
+  }, []);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-black flex items-center justify-center">
+        <p className="text-zinc-400 text-sm">Loading team...</p>
+      </main>
+    );
+  }
+
   return (
-    <main className="min-h-screen bg-black text-white-100">
+    <main className="min-h-screen bg-black text-white">
 
-      {/* PAGE HEADER */}
       <section className="flex flex-col items-center text-center px-4 pt-16 pb-14 max-w-6xl mx-auto">
-        <p className="mb-2 tracking-[0.3em] text-amber-300 uppercase text-sm">
-          Meet Our Team
-        </p>
-
-        <h1 className="mb-4 text-3xl md:text-6xl font-bold bg-gradient-to-r from-amber-400 to-white-400 bg-clip-text">
+        <p className="mb-2 tracking-[0.3em] text-amber-300 uppercase text-sm">Meet Our Team</p>
+        <h1 className="mb-4 text-3xl md:text-6xl font-bold bg-gradient-to-r from-amber-400 to-white bg-clip-text text-transparent">
           Our People
         </h1>
-
-        <p className="max-w-xl text-white-400">
-          Leaders driving social impact through entrepreneurial action
-        </p>
+        <p className="max-w-xl text-slate-400">Leaders driving social impact through entrepreneurial action</p>
       </section>
 
-      {/* CORE TEAM */}
-      <section className="px-4 pb-28 max-w-7xl mx-auto">
-        <h2 className="mb-10 text-2xl md:text-3xl font-semibold">
-          CORE TEAM
-        </h2>
-        <TeamGrid members={coreTeam} />
-      </section>
+      {coreTeam.length > 0 && (
+        <section className="px-4 pb-28 max-w-7xl mx-auto">
+          <h2 className="mb-10 text-2xl md:text-3xl font-semibold text-white">CORE TEAM</h2>
+          <TeamGrid members={coreTeam} />
+        </section>
+      )}
 
-      {/* SENIOR MEMBERS */}
-      <section className="px-4 pb-28 max-w-7xl mx-auto">
-        <h2 className="mb-10 text-2xl md:text-3xl font-semibold">
-          SENIOR MEMBERS
-        </h2>
-        <TeamGrid members={seniorMembers} />
-      </section>
+      {seniorMembers.length > 0 && (
+        <section className="px-4 pb-28 max-w-7xl mx-auto">
+          <h2 className="mb-10 text-2xl md:text-3xl font-semibold text-white">SENIOR MEMBERS</h2>
+          <TeamGrid members={seniorMembers} compact />
+        </section>
+      )}
 
-      {/* ASSOCIATES */}
-      <section className="px-4 pb-36 max-w-7xl mx-auto">
-        <h2 className="mb-10 text-2xl md:text-3xl font-semibold">
-          ASSOCIATES
-        </h2>
-        <TeamGrid members={associates} />
-      </section>
+      {associates.length > 0 && (
+        <section className="px-4 pb-36 max-w-7xl mx-auto">
+          <h2 className="mb-10 text-2xl md:text-3xl font-semibold text-white">ASSOCIATES</h2>
+          <TeamGrid members={associates} compact />
+        </section>
+      )}
+
+      {coreTeam.length === 0 && seniorMembers.length === 0 && associates.length === 0 && (
+        <div className="flex items-center justify-center py-40">
+          <p className="text-zinc-500 text-sm">No team members found.</p>
+        </div>
+      )}
 
     </main>
   );

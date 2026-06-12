@@ -10,7 +10,6 @@ import Masonry from "@/app/components/Masonry";
 import FlowingMenu from "@/app/components/FlowingMenu";
 import { AnimatedModalDemo } from "@/app/components/ui/AnimatedModalDemo";
 
-
 export default function Home() {
   const menuItems = [
     { label: "Home", ariaLabel: "Go to home page", link: "/" },
@@ -29,14 +28,14 @@ export default function Home() {
 
   const infiniteItems = [
     {
-      image: "/projects/image1.jpg",
+      image: "/image1.png",
       link: "https://www.instagram.com/p/CjdQKGbLncM/",
       title: "",
       description: "Jar candles",
     },
     {
       image: "/image2.png",
-      link: "https://www.instagram.com/p/C-ske3TSwKY/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+      link: "https://www.instagram.com/p/C-ske3TSwKY/",
       title: "Resin Rakhi",
       description: "Rakhi",
       titleSize: "2rem",
@@ -44,32 +43,32 @@ export default function Home() {
     },
     {
       image: "/image3.png",
-      link: "https://www.instagram.com/reel/DGsNQT-x35L/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+      link: "https://www.instagram.com/reel/DGsNQT-x35L/",
       title: "Organic Gulaal",
       description: "Abir",
     },
     {
       image: "/image4.png",
-      link: "https://www.instagram.com/reel/DGsNQT-x35L/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
-      title: "Winezone",
-      description: "Jar w Lid Candle",
+      link: "https://www.instagram.com/reel/DGsNQT-x35L/",
+      description: "Jar with Lid Candles",
     },
-    
   ];
 
   const masonryItems = [
-    { id: "1", img: "tanmay1.jpg", url: "/projects", height: 520 },
-    { id: "2", img: "tanmay2.png", url: "/projects", height: 500 },
-    { id: "3", img: "tanmay3.png", url: "/projects", height: 600 },
-    { id: "4", img: "tanmay4.png", url: "/projects", height: 450 },
-    { id: "5", img: "tanmay5.png", url: "/projects", height: 600 },
-    { id: "6", img: "tanmay6.png", url: "/projects", height: 550 },
-    { id: "7", img: "tanmay7.jpg", url: "/projects", height: 600 },
-    { id: "8", img: "tanmay8.jpeg", url: "/projects", height: 700},
+  { id: "1", img: "tanmay1.jpg", url: "/projects", height: 520 },
+  { id: "2", img: "tanmay2.png", url: "/projects", height: 380 },
+  { id: "3", img: "tanmay3.png", url: "/projects", height: 620 },
+  { id: "4", img: "tanmay4.png", url: "/projects", height: 300 },
+  { id: "5", img: "tanmay5.png", url: "/projects", height: 580 },
+  { id: "6", img: "tanmay6.png", url: "/projects", height: 420 },
+  { id: "7", img: "tanmay7.jpg", url: "/projects", height: 680 },
+  { id: "8", img: "tanmay8.jpeg", url: "/projects", height: 350 },
+
   ];
 
   return (
     <main className="min-h-screen bg-black text-slate-100 relative">
+
       {/* MENU */}
       <div className="fixed top-0 left-0 w-full z-[9999]">
         <StaggeredMenu
@@ -92,129 +91,158 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <LiquidEther />
         </div>
-
-        <div className="relative z-10 flex items-center min-h-screen px-4 pt-28 pb-16 max-w-6xl mx-auto">
-          <div>
+        <div className="relative z-10 flex items-center min-h-screen px-4 pt-24 pb-12 max-w-6xl mx-auto">
+          <div className="w-full">
+            <p className="text-amber-400 text-xs tracking-[0.3em] uppercase mb-4 font-medium">
+              Enactus · Aryabhatta College · New Delhi
+            </p>
             <h1 className="mb-4 font-extrabold">
-              <span className="block text-7xl md:text-9xl text-white">Enactus</span>
-              <span className="block text-5xl md:text-8xl text-amber-300 mt-2">
+              <span className="block text-6xl md:text-9xl text-white leading-none">Enactus</span>
+              <span className="block text-4xl md:text-8xl text-amber-300 mt-2 leading-none">
                 Aryabhatta College
               </span>
             </h1>
-
-            <p className="max-w-xl mb-8 font-bold">
+            <p className="max-w-xl mt-6 mb-8 text-sm md:text-base text-slate-400 font-normal leading-relaxed">
               We build student-led projects that create measurable impact for
               communities while helping members grow as leaders.
             </p>
-
-            <Carousel baseWidth={330} autoplay={false} loop={false} />
+            <Carousel baseWidth={300} autoplay={true} autoplayDelay={4000} loop={false} />
           </div>
         </div>
       </section>
 
       {/* ABOUT */}
-      <section id="about" className="border-t border-slate-800 bg-black">
-        <div className="max-w-6xl mx-auto px-4 py-20 flex flex-col gap-20">
+      <section id="about" className="border-t border-slate-800/60 bg-black">
+        <div className="max-w-6xl mx-auto px-4 py-12 md:py-20 flex flex-col gap-12 md:gap-24">
 
-          <TextPressure text="ABOUT US" textColor="#ffffff" minFontSize={90} />
+          {/* ABOUT US HEADING */}
+          <div>
+            <TextPressure text="ABOUT US" textColor="#ffffff" minFontSize={60} />
+          </div>
 
+          {/* INTRO TEXT */}
           <BlurText
-            text="Since 2016, we have been empowering communities through bold entrepreneurial action.
- From sustainability to social transformation, our work is driven by the mission to create meaningful and measurable impact. Every day, our team pushes boundaries, builds solutions, and turns ideas into real change for the people who need it most.
-"
+            text="Since 2016, we have been empowering communities through bold entrepreneurial action. From sustainability to social transformation, our work is driven by the mission to create meaningful and measurable impact."
             animateBy="words"
             direction="bottom"
             delay={35}
             stepDuration={0.4}
-            className="max-w-4xl mx-auto text-slate-300 text-justify text-lg md:text-xl leading-relaxed tracking-wide font-light"
+            className="max-w-3xl mx-auto text-slate-300 text-center text-base md:text-xl leading-relaxed tracking-wide font-light"
           />
 
-          <section className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            {/* LEFT TEXT */}
+          {/* TEXT + IMAGE */}
+          <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
             <div>
-              <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-white to-amber-300 bg-clip-text text-transparent">
-                We are shaping leaders
-                <br />
-                through action
+              <div className="w-12 h-1 bg-amber-400 mb-6 rounded-full" />
+              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-6">
+                We are shaping leaders{" "}
+                <span className="text-amber-300">through action</span>
               </h2>
-              <p className="mt-6 text-slate-300 text-lg leading-relaxed tracking-wide">
-                Focused on long-term systems we design solutions that create sustainable livelihoods and responsible consumption. From value-added food products that generate income to organic colours , diyas and rakhis that make celebrations safer, our work blends tradition with sustainability.
+              <p className="text-slate-300 text-base leading-relaxed mb-4">
+                Focused on long-term systems, we design solutions that create sustainable livelihoods and responsible consumption. From value-added food products to organic colours, diyas and rakhis that make celebrations safer.
               </p>
-              <p className="mt-4 text-slate-400 text-base md:text-lg leading-relaxed tracking-wide">
-                We further promote natural farming alternatives like organic pesticides and climate-conscious materials made from hemp that reduces environmental impact while strengthening communities.
+              <p className="text-slate-500 text-sm leading-relaxed">
+                We further promote natural farming alternatives like organic pesticides and climate-conscious materials made from hemp.
               </p>
             </div>
-
-            {/* RIGHT IMAGE */}
             <div className="w-full flex justify-center">
               <img
                 src="/nice.jpg"
                 alt="About Enactus"
-                className="w-full max-w-md md:max-w-lg rounded-3xl object-cover shadow-xl"
+                className="w-full max-w-md rounded-2xl object-cover shadow-2xl border border-slate-800"
               />
             </div>
           </section>
 
-          <section className="relative w-full min-h-[700px]">
+          {/* MASONRY */}
+          <section className="relative w-full min-h-[400px] md:min-h-[600px]">
             <Masonry items={masonryItems} />
           </section>
 
-          <section className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* MISSION + STATS */}
+          <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start">
             <div>
-              <h2 className="text-5xl md:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-amber-300 to-white bg-clip-text text-transparent mb-6">Our mission</h2>
-              <p className="text-slate-300">
-                We empower students to become socially responsible leaders.
+              <div className="w-12 h-1 bg-amber-400 mb-6 rounded-full" />
+              <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
+                Our <span className="text-amber-300">mission</span>
+              </h2>
+              <p className="text-slate-400 text-base leading-relaxed">
+                We empower students to become socially responsible leaders and changemakers.
               </p>
             </div>
-
-            <div className="space-y-10">
-              <div>
-                <h3 className="text-5xl md:text-6xl font-extrabold text-amber-300">44+</h3>
-                <p className="text-slate-400 text-lg tracking-wide">Active initiatives</p>
-              </div>
-              <div>
-                <h3 className="text-5xl md:text-6xl font-extrabold text-amber-300">₹1Cr+</h3>
-                <p className="text-slate-400 text-lg tracking-wide">Community value generated</p>
-              </div>
-              <div>
-                <h3 className="text-5xl md:text-6xl font-extrabold text-amber-300">10,000+</h3>
-                <p className="text-slate-400 text-lg tracking-wide">Lives impacted</p>
-              </div>
+            <div className="grid grid-cols-3 lg:grid-cols-1 gap-4 lg:gap-0 lg:space-y-6">
+              {[
+                { num: "44+", label: "Active initiatives" },
+                { num: "₹1Cr+", label: "Community value generated" },
+                { num: "10,000+", label: "Lives impacted" },
+              ].map((stat) => (
+                <div key={stat.num} className="border-l-2 border-amber-400/40 pl-4 lg:pl-6">
+                  <h3 className="text-2xl md:text-5xl font-extrabold text-amber-300">{stat.num}</h3>
+                  <p className="text-slate-400 text-xs md:text-base mt-1">{stat.label}</p>
+                </div>
+              ))}
             </div>
           </section>
 
-          {/* FLOWING MENU — FULL BLEED */}
-          <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mt-20">
-            <section className="w-full h-[600px]">
-              <FlowingMenu
-                items={[
-                  { link: "/projects", text: "Palaash", image: "/palaash.png" },
-                  { link: "/projects", text: "Aarazi", image: "/Aarazi.png" },
-                  { link: "/projects", text: "Ibtida", image: "/Ibtida.png" },
-                  { link: "/projects", text: "Utkarsh", image: "/utkarsh.png" },
-                ]}
-                speed={15}
-                textColor="#ffffff"
-                bgColor="#060010"
-                marqueeBgColor="#ffffff"
-                marqueeTextColor="#060010"
-                borderColor="#ffffff"
-              />
-            </section>
+          {/* PROJECTS LABEL */}
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-1 bg-amber-400" />
+            <p className="text-amber-400 text-3xl tracking-[0.2em] uppercase font-medium">Our Projects</p>
           </div>
 
-          {/* INFINITE MENU — MOVED BELOW FLOWING MENU */}
-          <h2 className="text-4xl md:text-5xl font-bold mt-20">OUR PRODUCTS</h2>
-          <div className="w-full h-[480px] rounded-3xl overflow-hidden">
-            <InfiniteMenu items={infiniteItems} scale={1.2} />
-          </div>
-           {/* ANIMATED BOOKING MODAL */}
-           
-          <div className="relative z-50 py-20 flex justify-center items-center bg-gradient-to-r from-slate-900/50 to-black/50 rounded-3xl mx-4">
-            <AnimatedModalDemo />
-          </div>
         </div>
       </section>
+
+      {/* FLOWING MENU — FULL BLEED */}
+      <div className="relative w-full overflow-hidden">
+        <div className="h-[360px] md:h-[560px]">
+          <FlowingMenu
+            items={[
+              { link: "/projects", text: "Palaash", image: "/palaash.png" },
+              { link: "/projects", text: "Aarazi", image: "/Aarazi.png" },
+              { link: "/projects", text: "Ibtida", image: "/Ibtida.png" },
+              { link: "/projects", text: "Utkarsh", image: "/utkarsh.png" },
+            ]}
+            speed={15}
+            textColor="#ffffff"
+            bgColor="#060010"
+            marqueeBgColor="#ffffff"
+            marqueeTextColor="#060010"
+            borderColor="#ffffff"
+          />
+        </div>
+      </div>
+
+      {/* PRODUCTS + ORDER */}
+      <section className="bg-black">
+        <div className="max-w-6xl mx-auto px-4 py-12 md:py-20 flex flex-col gap-8 md:gap-12">
+
+          {/* PRODUCTS HEADER */}
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-1 bg-amber-400 rounded-full" />
+            <h2 className="text-3xl md:text-5xl font-bold text-white">Our Products</h2>
+          </div>
+
+          {/* INFINITE MENU */}
+          <div className="w-full h-[360px] md:h-[480px] overflow-hidden">
+  <InfiniteMenu items={infiniteItems} scale={1.2} />
+</div>
+
+          {/* ORDER NOW */}
+          <div className="flex flex-col items-center gap-4 py-10 md:py-16 border border-slate-800 rounded-2xl bg-slate-950">
+            <p className="text-xs tracking-[0.3em] text-amber-400 uppercase">Place an order</p>
+            <h3 className="text-2xl md:text-4xl font-bold text-white text-center">
+              Support our community products
+            </h3>
+            <p className="text-slate-400 text-sm text-center max-w-md">
+              Every purchase directly supports the communities and artisans we work with.
+            </p>
+            <AnimatedModalDemo />
+          </div>
+
+        </div>
+      </section>
+
     </main>
   );
 }

@@ -3,13 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, PanInfo, useMotionValue, useTransform } from "motion/react";
 import React from "react";
-
-// icons (you can change these later)
-import {
-  FiCalendar,
-  FiUsers,
-  FiStar,
-} from "react-icons/fi";
+import { FiCalendar } from "react-icons/fi";
+import { supabase } from "@/lib/supabase";
 
 export interface CarouselItem {
   title: string;
@@ -19,7 +14,6 @@ export interface CarouselItem {
 }
 
 export interface CarouselProps {
-  items?: CarouselItem[];
   baseWidth?: number;
   autoplay?: boolean;
   autoplayDelay?: number;
@@ -27,28 +21,6 @@ export interface CarouselProps {
   loop?: boolean;
   round?: boolean;
 }
-
-/* DEFAULT CONTENT — UPCOMING EVENTS */
-const DEFAULT_ITEMS: CarouselItem[] = [
-  {
-    id: 1,
-    title: "Orientation 2025",
-    description: "Meet the core team and explore our impact projects.",
-    icon: <FiCalendar className="h-[16px] w-[16px] text-white" />,
-  },
-  {
-    id: 2,
-    title: "Recruitments Open",
-    description: "Design, Tech, Marketing & Operations.",
-    icon: <FiUsers className="h-[16px] w-[16px] text-white" />,
-  },
-  {
-    id: 3,
-    title: "Impact Summit",
-    description: "Our flagship entrepreneurship event.",
-    icon: <FiStar className="h-[16px] w-[16px] text-white" />,
-  },
-];
 
 const DRAG_BUFFER = 0;
 const VELOCITY_THRESHOLD = 500;
@@ -59,25 +31,7 @@ const SPRING_OPTIONS = {
   damping: 30,
 };
 
-interface CarouselItemProps {
-  item: CarouselItem;
-  index: number;
-  itemWidth: number;
-  round: boolean;
-  trackItemOffset: number;
-  x: any;
-  transition: any;
-}
-
-function CarouselItem({
-  item,
-  index,
-  itemWidth,
-  round,
-  trackItemOffset,
-  x,
-  transition,
-}: CarouselItemProps) {
+function CarouselItem({ item, index, itemWidth, round, trackItemOffset, x, transition }: any) {
   const range = [
     -(index + 1) * trackItemOffset,
     -index * trackItemOffset,
@@ -88,46 +42,68 @@ function CarouselItem({
 
   return (
     <motion.div
-      className={`relative shrink-0 flex flex-col ${
-        round
-          ? "items-center justify-center text-center bg-[#060010]"
-          : "items-start justify-between bg-[#111] border border-[#222] rounded-[14px]"
-      } overflow-hidden cursor-grab active:cursor-grabbing`}
+      className="relative shrink-0 flex flex-col items-start justify-between bg-black/60 border border-amber-400/20 rounded-[14px] overflow-hidden cursor-grab active:cursor-grabbing"
       style={{
         width: itemWidth,
-        height: round ? itemWidth : "100%",
+        height: "100%",
         rotateY,
-        ...(round && { borderRadius: "50%" }),
       }}
       transition={transition}
     >
-      <div className="p-5">
-        <span className="flex h-[32px] w-[32px] items-center justify-center rounded-full bg-[#060010]">
+      <div className="p-4">
+        <span className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-amber-400/10 border border-amber-400/30">
           {item.icon}
         </span>
       </div>
-
-      <div className="p-5 pt-0">
-        <div className="mb-1 font-bold text-lg text-white">
-          {item.title}
-        </div>
-        <p className="text-sm text-slate-300">
-          {item.description}
-        </p>
+      <div className="p-4 pt-0">
+        <div className="mb-1 font-bold text-base text-white">{item.title}</div>
+        <p className="text-xs text-slate-400 leading-relaxed">{item.description}</p>
       </div>
     </motion.div>
   );
 }
 
 export default function Carousel({
-  items = DEFAULT_ITEMS,
-  baseWidth = 330,
+  baseWidth = 300,
   autoplay = false,
   autoplayDelay = 3000,
   pauseOnHover = false,
   loop = false,
   round = false,
 }: CarouselProps) {
+  const [items, setItems] = useState<CarouselItem[]>([]);
+
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      const { data } = await supabase
+        .from("announcements")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (data && data.length > 0) {
+        setItems(
+          data.map((ann: any, i: number) => ({
+            id: i + 1,
+            title: ann.title,
+            description: ann.content,
+            icon: <FiCalendar className="h-[14px] w-[14px] text-amber-400" />,
+          }))
+        );
+      } else {
+        setItems([
+          {
+            id: 1,
+            title: "Welcome to Enactus",
+            description: "Stay tuned for announcements.",
+            icon: <FiCalendar className="h-[14px] w-[14px] text-amber-400" />,
+          },
+        ]);
+      }
+    };
+
+    fetchAnnouncements();
+  }, []);
+
   const containerPadding = 16;
   const itemWidth = baseWidth - containerPadding * 2;
   const trackItemOffset = itemWidth + GAP;
@@ -141,9 +117,7 @@ export default function Carousel({
   const [position, setPosition] = useState(loop ? 1 : 0);
   const x = useMotionValue(0);
   const [isHovered, setIsHovered] = useState(false);
-  const [isJumping, setIsJumping] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -162,11 +136,9 @@ export default function Carousel({
   useEffect(() => {
     if (!autoplay || itemsForRender.length <= 1) return;
     if (pauseOnHover && isHovered) return;
-
     const timer = setInterval(() => {
       setPosition((p) => Math.min(p + 1, itemsForRender.length - 1));
     }, autoplayDelay);
-
     return () => clearInterval(timer);
   }, [autoplay, autoplayDelay, pauseOnHover, isHovered, itemsForRender.length]);
 
@@ -176,12 +148,9 @@ export default function Carousel({
     x.set(-start * trackItemOffset);
   }, [items.length, loop, trackItemOffset, x]);
 
-  const transition = isJumping ? { duration: 0 } : SPRING_OPTIONS;
+  const transition = SPRING_OPTIONS;
 
-  const handleDragEnd = (
-    _: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
-  ) => {
+  const handleDragEnd = (_: any, info: PanInfo) => {
     const { offset, velocity } = info;
     const direction =
       offset.x < -DRAG_BUFFER || velocity.x < -VELOCITY_THRESHOLD
@@ -189,9 +158,7 @@ export default function Carousel({
         : offset.x > DRAG_BUFFER || velocity.x > VELOCITY_THRESHOLD
         ? -1
         : 0;
-
     if (direction === 0) return;
-
     setPosition((prev) =>
       Math.max(0, Math.min(prev + direction, itemsForRender.length - 1))
     );
@@ -201,15 +168,20 @@ export default function Carousel({
     ? (position - 1 + items.length) % items.length
     : Math.min(position, items.length - 1);
 
+  if (items.length === 0) return null;
+
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden rounded-[28px] border border-[#080803] bg-white/40 backdrop-blur-md p-4"
-      style={{ width: `${baseWidth}px` }}
+      className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-4"
+      style={{ width: `${baseWidth}px`, maxWidth: "100%" }}
     >
-    <div className="mb-3 text-[11px] font-semibold tracking-widest text-white/80 uppercase">
-        Announcements
-    </div>
+      <div className="mb-3 flex items-center gap-2">
+        <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+        <span className="text-[10px] font-semibold tracking-widest text-amber-400/80 uppercase">
+          Announcements
+        </span>
+      </div>
       <motion.div
         className="flex"
         drag={isAnimating ? false : "x"}
@@ -238,16 +210,14 @@ export default function Carousel({
           />
         ))}
       </motion.div>
-
-      {/* DOTS */}
-      <div className="mt-4 flex justify-center gap-3">
+      <div className="mt-3 flex justify-center gap-2">
         {items.map((_, index) => (
           <motion.div
             key={index}
-            className={`h-2 w-2 rounded-full cursor-pointer ${
-              activeIndex === index ? "bg-white" : "bg-white/40"
+            className={`h-1.5 rounded-full cursor-pointer transition-all ${
+              activeIndex === index ? "bg-amber-400 w-4" : "bg-white/20 w-1.5"
             }`}
-            animate={{ scale: activeIndex === index ? 1.3 : 1 }}
+            animate={{ scale: activeIndex === index ? 1 : 0.8 }}
             onClick={() => setPosition(loop ? index + 1 : index)}
           />
         ))}

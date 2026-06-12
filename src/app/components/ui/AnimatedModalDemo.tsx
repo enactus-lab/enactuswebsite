@@ -88,7 +88,7 @@ function ModalFooter({ children, className = "" }: { children: ReactNode; classN
 
 export function AnimatedModalDemo() {
   const images = [
-    "image1.jpg",
+    "image1.png",
     "image4.png",
     "image4.png",
     "image3.png",

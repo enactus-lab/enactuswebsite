@@ -1073,7 +1073,7 @@ class InfiniteGridMenu {
 
 const defaultItems: MenuItem[] = [
   {
-    image: '/projects/image1.jpg',
+    image: '/image1.jpg',
     link: '/projects',
     title: 'Palaash',
     description: 'Sustainable impact project'
@@ -1144,78 +1144,43 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0 }) => {
 
       {activeItem && (
         <>
-          <h2
+          {/* TOP — label + title stacked cleanly */}
+          <div
             className={`
-              select-none
-              absolute
-              font-black
-              text-[4rem]
-              top-10
-              left-1/2
-              transform
-              -translate-x-1/2
-              text-center
-              transition-all
-              ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
-              ${
-                isMoving
-                  ? 'opacity-0 pointer-events-none duration-[100ms]'
-                  : 'opacity-100 pointer-events-auto duration-[500ms]'
-              }
+              absolute top-5 left-1/2 -translate-x-1/2
+              flex flex-col items-center gap-1.5
+              pointer-events-none select-none
+              transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
+              ${isMoving ? 'opacity-0 translate-y-[-4px]' : 'opacity-100 translate-y-0'}
             `}
           >
-            {activeItem.title}
-          </h2>
+            <span className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-amber-400 font-semibold px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/20">
+              {activeItem.description}
+            </span>
+            <h2 className="font-black text-2xl md:text-5xl text-white text-center whitespace-nowrap drop-shadow-lg">
+              {activeItem.title}
+            </h2>
+          </div>
 
-          <p
-            className={`
-              select-none
-              absolute
-              max-w-[14ch]
-              text-[1.7rem]
-              top-3
-              left-1/2
-              transform
-              -translate-x-1/2
-              -translate-y-1/2
-              text-center
-              transition-all
-              ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
-              ${
-                isMoving
-                  ? 'opacity-0 pointer-events-none duration-[100ms]'
-                  : 'opacity-100 pointer-events-auto duration-[500ms]'
-              }
-            `}
-          >
-            {activeItem.description}
-          </p>
-
+          {/* BOTTOM — arrow button */}
           <div
             onClick={handleButtonClick}
             className={`
-              absolute
-              left-1/2
-              z-10
-              w-[60px]
-              h-[60px]
-              grid
-              place-items-center
-              bg-[#00ffff]
-              border-[5px]
-              border-black
-              rounded-full
-              cursor-pointer
-              transition-all
-              ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
-              ${
-                isMoving
-                  ? 'bottom-[-80px] opacity-0 pointer-events-none duration-[100ms] scale-0 -translate-x-1/2'
-                  : 'bottom-[3.8em] opacity-100 pointer-events-auto duration-[500ms] scale-100 -translate-x-1/2'
+              absolute left-1/2 -translate-x-1/2 z-10
+              w-12 h-12 md:w-14 md:h-14
+              grid place-items-center
+              bg-amber-400 hover:bg-amber-300
+              border-2 border-black
+              rounded-full cursor-pointer
+              shadow-lg shadow-amber-400/20
+              transition-all ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
+              ${isMoving
+                ? 'bottom-[-80px] opacity-0 pointer-events-none duration-[100ms] scale-0'
+                : 'bottom-14 opacity-100 pointer-events-auto duration-500 scale-100'
               }
             `}
           >
-            <p className="select-none relative text-[#060010] top-[2px] text-[26px]">&#x2197;</p>
+            <span className="text-black text-lg font-bold select-none">↗</span>
           </div>
         </>
       )}

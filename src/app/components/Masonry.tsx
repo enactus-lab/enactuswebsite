@@ -1,4 +1,4 @@
-"use client"; // Add this at the top!
+"use client";
 
 import React, {
   useEffect,
@@ -10,21 +10,19 @@ import React, {
 import { gsap } from 'gsap';
 
 const useMedia = (queries: string[], values: number[], defaultValue: number): number => {
-  // ✅ SERVER-SAFE: Check if window exists
   const get = () => {
     if (typeof window === 'undefined') return defaultValue;
     return values[queries.findIndex(q => window.matchMedia(q).matches)] ?? defaultValue;
   };
-  
+
   const [value, setValue] = useState<number>(get());
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    
     const handler = () => setValue(get());
     queries.forEach(q => window.matchMedia(q).addEventListener('change', handler));
     return () => queries.forEach(q => window.matchMedia(q).removeEventListener('change', handler));
-  }, [queries, values, defaultValue]); // ✅ Added dependencies
+  }, []);
 
   return value;
 };
@@ -35,7 +33,6 @@ const useMeasure = <T extends HTMLElement>() => {
 
   useLayoutEffect(() => {
     if (typeof window === 'undefined' || !ref.current) return;
-    
     const ro = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect;
       setSize({ width, height });
@@ -93,9 +90,9 @@ const Masonry: React.FC<MasonryProps> = ({
   stagger = 0.05,
   animateFrom = 'bottom',
   scaleOnHover = true,
-  hoverScale = 0.95,
+  hoverScale = 0.97,
   blurToFocus = true,
-  colorShiftOnHover = false
+  colorShiftOnHover = false,
 }) => {
   const columns = useMedia(
     ['(min-width:1500px)', '(min-width:1000px)', '(min-width:600px)', '(min-width:400px)'],
@@ -103,7 +100,7 @@ const Masonry: React.FC<MasonryProps> = ({
     1
   );
 
-  const isMobile = columns === 1;
+  const isMobile = columns <= 2;
 
   const [containerRef, { width }] = useMeasure<HTMLDivElement>();
   const [imagesReady, setImagesReady] = useState(false);
@@ -115,27 +112,20 @@ const Masonry: React.FC<MasonryProps> = ({
 
   const grid = useMemo<GridItem[]>(() => {
     if (!width || typeof width !== 'number') return [];
-
     const colHeights = new Array(columns).fill(0);
-    const gap = isMobile ? 28 : 16;
+    const gap = isMobile ? 8 : 16;
     const totalGaps = (columns - 1) * gap;
     const columnWidth = (width - totalGaps) / columns;
-
     const layout = items.map(child => {
       const col = colHeights.indexOf(Math.min(...colHeights));
       const x = col * (columnWidth + gap);
-
-      const height = isMobile
-        ? child.height / 3
-        : child.height / 2;
-
+      const height = isMobile ? child.height / 3.5 : child.height / 1.8;
       const y = colHeights[col];
       colHeights[col] += height + gap;
-
       return { ...child, x, y, w: columnWidth, h: height };
     });
-
-    setContainerHeight(Math.max(...colHeights) + (isMobile ? 120 : 40));
+    setContainerHeight(Math.max(...colHeights) + 20);
+    
     return layout;
   }, [columns, items, width, isMobile]);
 
@@ -153,16 +143,18 @@ const Masonry: React.FC<MasonryProps> = ({
           selector,
           {
             opacity: 0,
-            y: item.y + 60,
-            ...(blurToFocus && { filter: 'blur(10px)' })
+            y: item.y + 40,
+            scale: 0.96,
+            ...(blurToFocus && { filter: 'blur(8px)' }),
           },
           {
             opacity: 1,
+            scale: 1,
             ...animProps,
             ...(blurToFocus && { filter: 'blur(0px)' }),
-            duration: 0.8,
+            duration: 0.7,
             ease,
-            delay: index * stagger
+            delay: index * stagger,
           }
         );
       } else {
@@ -170,7 +162,7 @@ const Masonry: React.FC<MasonryProps> = ({
           ...animProps,
           duration,
           ease,
-          overwrite: 'auto'
+          overwrite: 'auto',
         });
       }
     });
@@ -178,10 +170,34 @@ const Masonry: React.FC<MasonryProps> = ({
     hasMounted.current = true;
   }, [grid, imagesReady, stagger, blurToFocus, duration, ease]);
 
+  const handleMouseEnter = (id: string) => {
+    gsap.to(`[data-key="${id}"] .img-inner`, {
+      scale: 1.06,
+      duration: 0.4,
+      ease: 'power2.out',
+    });
+    gsap.to(`[data-key="${id}"] .img-overlay`, {
+      opacity: 1,
+      duration: 0.3,
+    });
+  };
+
+  const handleMouseLeave = (id: string) => {
+    gsap.to(`[data-key="${id}"] .img-inner`, {
+      scale: 1,
+      duration: 0.4,
+      ease: 'power2.out',
+    });
+    gsap.to(`[data-key="${id}"] .img-overlay`, {
+      opacity: 0,
+      duration: 0.3,
+    });
+  };
+
   return (
     <div
       ref={containerRef}
-      className="relative w-full mt-20 mb-32 sm:mt-28 sm:mb-40"
+      className="relative w-full"
       style={{ height: containerHeight }}
     >
       {grid.map(item => (
@@ -191,14 +207,21 @@ const Masonry: React.FC<MasonryProps> = ({
           className="absolute box-content cursor-pointer"
           style={{ willChange: 'transform, width, height, opacity' }}
           onClick={() => window.open(item.url, '_blank', 'noopener')}
+          onMouseEnter={() => handleMouseEnter(item.id)}
+          onMouseLeave={() => handleMouseLeave(item.id)}
         >
-          <div
-            className="relative w-full h-full bg-cover bg-center rounded-[10px] shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)] hover:shadow-[0px_20px_60px_-15px_rgba(0,0,0,0.4)] transition-all duration-300"
-            style={{ backgroundImage: `url(${item.img})` }}
-          >
-            {colorShiftOnHover && (
-              <div className="color-overlay absolute inset-0 rounded-[10px] bg-gradient-to-tr from-pink-500/50 to-sky-500/50 opacity-0 hover:opacity-100 pointer-events-none transition-opacity duration-300" />
-            )}
+          <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+            {/* IMAGE */}
+            <div
+              className="img-inner absolute inset-0 bg-cover bg-center w-full h-full"
+              style={{ backgroundImage: `url(${item.img})` }}
+            />
+
+            {/* AMBER HOVER OVERLAY */}
+            <div className="img-overlay absolute inset-0 opacity-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+
+            {/* AMBER ACCENT LINE on hover */}
+            <div className="img-overlay absolute bottom-0 left-0 right-0 h-[3px] bg-amber-400 opacity-0" />
           </div>
         </div>
       ))}
